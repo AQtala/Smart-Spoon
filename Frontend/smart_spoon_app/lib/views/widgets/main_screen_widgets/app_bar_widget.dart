@@ -11,7 +11,7 @@ class CustomAppBarWidget extends StatelessWidget {
     return Container(
       height: height,
       width: width,
-      color: Theme.of(context).primaryColor,
+      color: Color.fromARGB(255, 108, 226, 197),
     );
   }
 }

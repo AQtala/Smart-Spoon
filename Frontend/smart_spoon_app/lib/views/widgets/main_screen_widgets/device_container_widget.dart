@@ -13,12 +13,8 @@ class DeviceContainer extends StatelessWidget {
       key: UniqueKey(),
       painter: _ClipShadowShadowPainter(
           clipper: PaperClip(),
-          shadow: Shadow(
-              color:
-                  Provider.of<ThemeManager>(context).themeMode == ThemeMode.dark
-                      ? Colors.white
-                      : Colors.black,
-              blurRadius: 5)),
+          shadow: const Shadow(
+              color: Color.fromARGB(255, 26, 192, 153), blurRadius: 10)),
       child: ClipPath(
         clipper: PaperClip(),
         child: Container(
@@ -43,7 +39,7 @@ class PaperClip extends CustomClipper<Path> {
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0);
     path.lineTo(size.width * 0.1, 0);
-    path.lineTo(0, size.height * 0.05);
+    path.lineTo(0, size.height * 0.04);
     return path;
   }
 
