@@ -33,11 +33,12 @@ class _AddDeviceFormWidgetState extends State<AddDeviceFormWidget> {
     return Container(
       padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(
-              color: _isNameValid
-                  ? const Color.fromARGB(255, 0, 207, 155)
-                  : Colors.red)),
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(
+            color: _isNameValid
+                ? const Color.fromARGB(255, 0, 207, 155)
+                : Colors.red),
+      ),
       child: TextFormField(
         focusNode: _focusNode,
         keyboardType: TextInputType.text,
@@ -126,7 +127,7 @@ class _AddDeviceFormWidgetState extends State<AddDeviceFormWidget> {
                   _formKey.currentState!.save();
                 },
                 child: const Text(
-                  "Login",
+                  "Add",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w700,

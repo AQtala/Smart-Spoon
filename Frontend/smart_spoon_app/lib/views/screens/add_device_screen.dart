@@ -11,17 +11,25 @@ class AddDeviceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Login"),
+        title: const Text("Add Device"),
+        centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 0, 207, 155),
       ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Lottie.asset(
-              'assets/healthcare-loader.json',
-              animate: true,
-              repeat: true,
+            Container(
+              height: 200,
+              width: 200,
+              margin: const EdgeInsets.only(top: 50),
+              child: Center(
+                child: Lottie.asset(
+                  'assets/add_device.json',
+                  fit: BoxFit.scaleDown,
+                  repeat: false,
+                ),
+              ),
             ),
             const AddDeviceFormWidget(),
           ],
