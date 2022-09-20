@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-import '../widgets/login_widgets/login_form_widget.dart';
+import '../widgets/login_widgets/add_device_form_widget.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class AddDeviceScreen extends StatelessWidget {
+  static String name = "/loginScreen";
+  const AddDeviceScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class LoginScreen extends StatelessWidget {
               animate: true,
               repeat: true,
             ),
-            const LoginFormWidget(),
+            const AddDeviceFormWidget(),
           ],
         ),
       ),

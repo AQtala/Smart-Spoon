@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class LoginFormWidget extends StatefulWidget {
-  const LoginFormWidget({Key? key}) : super(key: key);
+class AddDeviceFormWidget extends StatefulWidget {
+  const AddDeviceFormWidget({Key? key}) : super(key: key);
 
   @override
-  State<LoginFormWidget> createState() => _LoginFormWidgetState();
+  State<AddDeviceFormWidget> createState() => _AddDeviceFormWidgetState();
 }
 
-class _LoginFormWidgetState extends State<LoginFormWidget> {
+class _AddDeviceFormWidgetState extends State<AddDeviceFormWidget> {
   String _name = "";
   bool _isNameValid = true;
   late FocusNode _focusNode;
