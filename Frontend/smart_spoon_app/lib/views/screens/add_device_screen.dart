@@ -13,7 +13,7 @@ class AddDeviceScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Add Device"),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 0, 207, 155),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: SingleChildScrollView(
         child: Column(
