@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:smart_spoon_app/controllers/ThemeController/theme_manager.dart';
+import 'package:smart_spoon_app/controllers/ThemeController/theme_constants.dart';
 import 'package:smart_spoon_app/views/screens/add_device_screen.dart';
-import 'package:smart_spoon_app/views/widgets/main_screen_widgets/app_bar_widget.dart';
 import 'package:smart_spoon_app/views/widgets/main_screen_widgets/device_container_widget.dart';
+
+import '../widgets/main_screen_widgets/app_bar_widget.dart';
 
 class MainScreen extends StatelessWidget {
   static String name = "/mainScreen";
@@ -12,15 +12,38 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeManager _themeManager = Provider.of<ThemeManager>(context);
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       key: _scaffoldKey,
+      drawer: Drawer(
+        backgroundColor: COLOR_PRIMARY,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const DrawerHeader(
+              child: Text('Drawer Header'),
+              decoration: BoxDecoration(
+                color: COLOR_ACCENT,
+              ),
+            ),
+            ListTile(
+              title: const Text('Item 1'),
+              onTap: () {
+                _scaffoldKey.currentState!.openEndDrawer();
+              },
+            )
+          ],
+        ),
+      ),
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          CustomAppBarWidget(width: size.width, height: size.height),
-          DeviceContainer(width: size.width, height: size.height)
+          CustomAppBarWidget(
+            width: size.width,
+            height: size.height,
+            scaffoldKey: _scaffoldKey,
+          ),
+          DeviceContainer(width: size.width, height: size.height),
         ],
       ),
       floatingActionButton: FloatingActionButton(

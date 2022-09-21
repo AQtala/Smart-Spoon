@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_spoon_app/controllers/ThemeController/theme_constants.dart';
 
 class AddDeviceFormWidget extends StatefulWidget {
   const AddDeviceFormWidget({Key? key}) : super(key: key);
@@ -32,27 +33,24 @@ class _AddDeviceFormWidgetState extends State<AddDeviceFormWidget> {
   Widget _buildNameField() {
     return Container(
       padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+      margin: EdgeInsets.all(0),
       decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(
-            color: _isNameValid
-                ? const Color.fromARGB(255, 0, 207, 155)
-                : Colors.red),
+        border: Border.all(color: _isNameValid ? COLOR_ACCENT : Colors.red),
       ),
       child: TextFormField(
         focusNode: _focusNode,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
           labelText: "Device Name",
-          labelStyle: TextStyle(
-              color: _isNameValid
-                  ? const Color.fromARGB(255, 0, 207, 155)
-                  : Colors.red),
+          labelStyle:
+              TextStyle(color: _isNameValid ? COLOR_ACCENT : Colors.red),
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
           errorBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
-          focusColor: const Color.fromARGB(255, 0, 207, 155),
+          focusColor: COLOR_ACCENT,
         ),
         style: const TextStyle(fontSize: 18),
         cursorColor: Colors.grey,
@@ -91,12 +89,13 @@ class _AddDeviceFormWidgetState extends State<AddDeviceFormWidget> {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
+          color: Color.fromARGB(255, 255, 255, 255),
           boxShadow: const [
             BoxShadow(
                 color: Colors.black,
-                blurRadius: 3,
+                blurRadius: 2,
                 blurStyle: BlurStyle.outer,
-                spreadRadius: 10),
+                spreadRadius: 5),
           ]),
       margin: const EdgeInsets.all(24),
       child: Form(
@@ -112,12 +111,11 @@ class _AddDeviceFormWidgetState extends State<AddDeviceFormWidget> {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(20.0),
-                    primary: const Color.fromARGB(255, 0, 207, 155),
+                    primary: COLOR_PRIMARY,
                     onPrimary: Colors.white,
-                    elevation: 10,
-                    shadowColor: const Color.fromARGB(255, 0, 207, 155),
-                    side: const BorderSide(
-                        color: Color.fromARGB(255, 0, 207, 155)),
+                    elevation: 5,
+                    shadowColor: COLOR_PRIMARY,
+                    side: const BorderSide(color: COLOR_PRIMARY),
                     shape: const StadiumBorder(),
                     fixedSize: const Size(140, 60)),
                 onPressed: () {

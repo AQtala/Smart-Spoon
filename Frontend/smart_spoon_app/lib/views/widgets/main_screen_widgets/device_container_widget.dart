@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:smart_spoon_app/controllers/ThemeController/theme_manager.dart';
+
+import '../../../controllers/ThemeController/theme_constants.dart';
 
 class DeviceContainer extends StatelessWidget {
   const DeviceContainer({Key? key, required this.width, required this.height})
@@ -13,8 +13,7 @@ class DeviceContainer extends StatelessWidget {
       key: UniqueKey(),
       painter: _ClipShadowShadowPainter(
           clipper: PaperClip(),
-          shadow: const Shadow(
-              color: Color.fromARGB(255, 26, 192, 153), blurRadius: 10)),
+          shadow: const Shadow(color: COLOR_PRIMARY_SHADOW, blurRadius: 10)),
       child: ClipPath(
         clipper: PaperClip(),
         child: Container(

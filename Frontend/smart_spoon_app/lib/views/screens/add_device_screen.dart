@@ -20,14 +20,18 @@ class AddDeviceScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-              height: 200,
-              width: 200,
-              margin: const EdgeInsets.only(top: 50),
+              decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+              ),
+              height: 250,
+              width: 250,
+              margin: const EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.all(0),
               child: Center(
                 child: Lottie.asset(
-                  'assets/add_device.json',
+                  'assets/animations/add_device.json',
                   fit: BoxFit.scaleDown,
-                  repeat: false,
+                  repeat: true,
                 ),
               ),
             ),
