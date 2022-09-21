@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smart_spoon_app/views/widgets/ui/CustomIconButton.dart';
 
+import '../../../controllers/ThemeController/theme_constants.dart';
+
 class CustomAppBarWidget extends StatelessWidget {
   const CustomAppBarWidget(
       {Key? key,
@@ -12,7 +14,7 @@ class CustomAppBarWidget extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
   @override
   Widget build(BuildContext context) {
-    final _theme = Theme.of(context);
+    var _theme = Theme.of(context);
     return Container(
       height: height,
       width: width,
@@ -32,13 +34,13 @@ class CustomAppBarWidget extends StatelessWidget {
                     scaffoldKey.currentState!.openDrawer();
                   },
                   url: 'assets/icons/menus.png',
-                  iconColor: _theme.canvasColor,
+                  iconColor: COLOR_PRIMARY_DARK,
                 ),
                 const Text(
                   "App_Name",
                   style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
+                    color: COLOR_PRIMARY_DARK,
+                    fontWeight: FontWeight.w800,
                     fontSize: 18,
                     overflow: TextOverflow.visible,
                   ),

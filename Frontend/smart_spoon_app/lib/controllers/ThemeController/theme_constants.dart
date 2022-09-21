@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 // ignore: constant_identifier_names
-const COLOR_PRIMARY = Color.fromARGB(255, 52, 110, 138);
+const COLOR_PRIMARY = Color.fromARGB(255, 255, 220, 155);
 // ignore: constant_identifier_names
-const COLOR_PRIMARY_SHADOW = Color.fromARGB(255, 3, 72, 107);
+const COLOR_PRIMARY_SHADOW = Color.fromARGB(255, 119, 86, 43);
+// ignore: constant_identifier_names
+const COLOR_PRIMARY_DARK = Color.fromARGB(255, 68, 44, 46);
 // ignore: constant_identifier_names
 const COLOR_ACCENT = Color.fromARGB(255, 155, 140, 41);
 
@@ -31,5 +33,4 @@ ThemeData darkTheme = ThemeData(
       maximumSize: const Size(50, 50),
     ),
   ),
-  canvasColor: Colors.black,
 );
