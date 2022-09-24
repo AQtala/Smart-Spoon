@@ -1,39 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_spoon_app/controllers/ThemeController/theme_constants.dart';
-import 'package:smart_spoon_app/views/screens/add_device_screen.dart';
-import 'package:smart_spoon_app/views/widgets/main_screen_widgets/device_container_widget.dart';
+import 'package:smart_spoon_app/views/home_screen/home_screen_widgets/device_container_widget.dart';
 
 import '../../controllers/ThemeController/theme_manager.dart';
-import '../widgets/main_screen_widgets/app_bar_widget.dart';
+import 'home_screen_widgets/app_bar_widget.dart';
+import 'home_screen_widgets/nav_bar_widget.dart';
 
-class MainScreen extends StatelessWidget {
-  static String name = "/mainScreen";
-  MainScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatelessWidget {
+  static String name = "/homeScreen";
+  HomeScreen({Key? key}) : super(key: key);
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  Widget _drawer(ThemeManager _themeManager, BuildContext ctx) {
+  Widget _drawer(ThemeManager _themeManager, BuildContext ctx, Size size) {
     return Drawer(
       backgroundColor: COLOR_PRIMARY,
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            margin: const EdgeInsets.all(0),
-            child: Text(
-              'Settings',
-              style: TextStyle(
-                color: _themeManager.themeMode == ThemeMode.light
-                    ? COLOR_PRIMARY_DARK
-                    : COLOR_PRIMARY,
-                fontWeight: FontWeight.w700,
-                fontSize: 32,
-                overflow: TextOverflow.visible,
+            margin: EdgeInsets.only(top: size.height * 0.1),
+            child: Container(
+              alignment: Alignment.topCenter,
+              child: Text(
+                'Settings',
+                style: TextStyle(
+                    color: COLOR_PRIMARY_DARK, fontSize: size.width * 0.12),
               ),
             ),
             decoration: BoxDecoration(
-              color: Theme.of(ctx).canvasColor,
+              color: Theme.of(ctx).primaryColor,
             ),
+          ),
+          ListTile(
+            title: const Text(
+              'Home',
+              style: TextStyle(
+                color: COLOR_PRIMARY_DARK,
+                fontWeight: FontWeight.w700,
+                fontSize: 20,
+                overflow: TextOverflow.visible,
+              ),
+            ),
+            trailing: const Icon(
+              Icons.home_outlined,
+              size: 40,
+              color: COLOR_PRIMARY_DARK,
+            ),
+            onTap: () {
+              _scaffoldKey.currentState!.openEndDrawer();
+            },
           ),
           ListTile(
             title: const Text(
@@ -52,9 +68,6 @@ class MainScreen extends StatelessWidget {
               },
               activeColor: COLOR_ACCENT,
             ),
-            onTap: () {
-              _scaffoldKey.currentState!.openEndDrawer();
-            },
           ),
           ListTile(
             title: const Text(
@@ -84,7 +97,7 @@ class MainScreen extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       key: _scaffoldKey,
-      drawer: _drawer(_themeManager, context),
+      drawer: _drawer(_themeManager, context, size),
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -97,17 +110,11 @@ class MainScreen extends StatelessWidget {
             width: size.width,
             height: size.height,
           ),
+          CustomNavBarWidget(
+            width: size.width,
+            height: size.height,
+          ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        onPressed: () => {
-          Navigator.of(context).pushNamed(AddDeviceScreen.name),
-        },
-        child: const Icon(
-          Icons.add,
-          color: COLOR_PRIMARY_DARK,
-        ),
       ),
     );
   }

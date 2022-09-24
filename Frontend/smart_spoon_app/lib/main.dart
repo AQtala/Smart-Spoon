@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_spoon_app/controllers/ThemeController/theme_constants.dart';
-import 'package:smart_spoon_app/views/screens/add_device_screen.dart';
-import 'package:smart_spoon_app/views/screens/main_screen.dart';
+import 'package:smart_spoon_app/views/home_screen/home_screen.dart';
 
 import 'controllers/ThemeController/theme_manager.dart';
 
@@ -40,11 +39,10 @@ class Home extends StatelessWidget {
         theme: lightTheme,
         darkTheme: darkTheme,
         themeMode: _themeMode,
-        home: MainScreen(),
-        initialRoute: '/loginScreen',
+        home: HomeScreen(),
+        initialRoute: HomeScreen.name,
         routes: {
-          MainScreen.name: (context) => MainScreen(),
-          AddDeviceScreen.name: (context) => const AddDeviceScreen()
+          HomeScreen.name: (context) => HomeScreen(),
         },
       ),
     );

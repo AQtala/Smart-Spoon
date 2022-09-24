@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_spoon_app/views/widgets/ui/CustomIconButton.dart';
 
 import '../../../controllers/ThemeController/theme_constants.dart';
 
@@ -23,18 +22,19 @@ class CustomAppBarWidget extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(
-              height: 55,
+              height: 50,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                CustomIconButton(
+                IconButton(
                   onPressed: () {
                     scaffoldKey.currentState!.openDrawer();
                   },
-                  url: 'assets/icons/menus.png',
-                  iconColor: COLOR_PRIMARY_DARK,
+                  icon: const Icon(Icons.menu),
+                  color: COLOR_PRIMARY_DARK,
+                  iconSize: 40,
                 ),
                 const Text(
                   "App_Name",
@@ -44,7 +44,10 @@ class CustomAppBarWidget extends StatelessWidget {
                     fontSize: 18,
                     overflow: TextOverflow.visible,
                   ),
-                )
+                ),
+                const SizedBox(
+                  width: 50,
+                ),
               ],
             ),
           ],

@@ -2,27 +2,42 @@ import 'package:flutter/material.dart';
 
 import '../../../controllers/ThemeController/theme_constants.dart';
 
-class DeviceContainer extends StatelessWidget {
-  const DeviceContainer({Key? key, required this.width, required this.height})
+class CustomNavBarWidget extends StatelessWidget {
+  const CustomNavBarWidget(
+      {Key? key, required this.width, required this.height})
       : super(key: key);
   final double width, height;
-
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
       key: UniqueKey(),
       painter: _ClipShadowShadowPainter(
-          clipper: PaperClip(),
-          shadow: const Shadow(color: COLOR_PRIMARY_SHADOW, blurRadius: 10)),
+        clipper: PaperClip(),
+        shadow: Shadow(
+          color: Theme.of(context).shadowColor,
+          blurRadius: 5,
+        ),
+      ),
       child: ClipPath(
         clipper: PaperClip(),
         child: Container(
-          margin: const EdgeInsets.all(0),
-          padding: const EdgeInsets.all(0),
-          height: height * 0.88,
-          width: width,
-          decoration: BoxDecoration(
-            color: Theme.of(context).canvasColor,
+          margin: EdgeInsets.only(left: width * 0.8),
+          width: width * 0.2,
+          height: height * 0.08,
+          child: ElevatedButton(
+            onPressed: () => {},
+            style: ElevatedButton.styleFrom(
+              fixedSize: Size(
+                width * 0.2,
+                height * 0.08,
+              ),
+              padding: EdgeInsets.only(top: height * 0.01),
+            ),
+            child: Icon(
+              Icons.add,
+              size: height * 0.05,
+              color: COLOR_PRIMARY_DARK,
+            ),
           ),
         ),
       ),
@@ -34,11 +49,13 @@ class PaperClip extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = Path();
-    path.lineTo(0, size.height);
+    path.lineTo(size.width * 0.88, 0);
+    path.lineTo(size.width * 0.8, size.height * 0.5);
+    path.lineTo(size.width * 0.8, size.height);
     path.lineTo(size.width, size.height);
     path.lineTo(size.width, 0);
-    path.lineTo(size.width * 0.1, 0);
-    path.lineTo(0, size.height * 0.04);
+
+    // path.lineTo(size.width * 0.8, size.height * 0.04);
     return path;
   }
 
