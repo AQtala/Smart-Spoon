@@ -19,7 +19,7 @@ class MyPreferencesService implements PreferencesService {
   MyPreferencesService(this._sharedPreferences);
 
   @override
-  get() {
+  Preferences get() {
     final data = _sharedPreferences.getString(PREFS_KEY);
     if (data == null) {
       return Preferences.defaultValues();

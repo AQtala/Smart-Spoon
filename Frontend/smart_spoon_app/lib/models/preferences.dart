@@ -13,8 +13,6 @@ class Preferences {
   @JsonKey(defaultValue: THEME_MODE_DEFAULT_VALUE)
   final ThemeMode themeMode;
 
-  get getThemeMode => themeMode;
-
   Preferences(this.themeMode);
 
   factory Preferences.defaultValues() {

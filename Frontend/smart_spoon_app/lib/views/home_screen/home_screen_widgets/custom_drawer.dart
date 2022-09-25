@@ -45,12 +45,42 @@ class CustomDrawer extends StatelessWidget {
               ),
               trailing: const Icon(
                 Icons.home_outlined,
-                size: 40,
+                size: 38,
                 color: COLOR_PRIMARY_DARK,
               ),
               onTap: () {
                 scaffoldKey.currentState!.openEndDrawer();
               },
+            ),
+            ListTile(
+              title: const Text(
+                'Language',
+                style: TextStyle(
+                  color: COLOR_PRIMARY_DARK,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20,
+                  overflow: TextOverflow.visible,
+                ),
+              ),
+              trailing: DropdownButton(
+                icon: const Icon(
+                  Icons.language_rounded,
+                  size: 35,
+                  color: COLOR_PRIMARY_DARK,
+                ),
+                underline: const SizedBox(),
+                items: [
+                  DropdownMenuItem(
+                    value: const Locale('en'),
+                    child: const Text('English'),
+                  ),
+                  DropdownMenuItem(
+                    value: const Locale('ar'),
+                    child: const Text('العربية'),
+                  ),
+                ],
+                onChanged: (Locale? value) {},
+              ),
             ),
             ListTile(
               title: const Text(
@@ -62,20 +92,39 @@ class CustomDrawer extends StatelessWidget {
                   overflow: TextOverflow.visible,
                 ),
               ),
-              trailing: Switch(
-                // value: _preferencesNotifier.themeMode == ThemeMode.light ? false : true,
-                value:
-                    prefCubit.state.themeMode == ThemeMode.dark ? true : false,
-                onChanged: (newValue) => {
-                  newValue == true
-                      ? prefCubit.changePreferences(
-                          preferences.copyWith(themeMode: ThemeMode.dark),
-                        )
-                      : prefCubit.changePreferences(
-                          preferences.copyWith(themeMode: ThemeMode.light),
-                        ),
+              trailing: DropdownButton(
+                icon: const Icon(
+                  Icons.display_settings_rounded,
+                  size: 35,
+                  color: COLOR_PRIMARY_DARK,
+                ),
+                underline: const SizedBox(),
+                items: [
+                  DropdownMenuItem(
+                    value: "Light",
+                    child: const Text('Light'),
+                  ),
+                  DropdownMenuItem(
+                    value: "Dark",
+                    child: const Text('Dark'),
+                  ),
+                  DropdownMenuItem(
+                    value: "System",
+                    child: const Text('System'),
+                  ),
+                ],
+                onChanged: (String? value) {
+                  if (value == null || value == "System") {
+                    prefCubit.changePreferences(
+                        preferences.copyWith(themeMode: ThemeMode.system));
+                  } else if (value == "Dark") {
+                    prefCubit.changePreferences(
+                        preferences.copyWith(themeMode: ThemeMode.dark));
+                  } else if (value == "Light") {
+                    prefCubit.changePreferences(
+                        preferences.copyWith(themeMode: ThemeMode.light));
+                  }
                 },
-                activeColor: COLOR_ACCENT,
               ),
             ),
             ListTile(
@@ -90,7 +139,7 @@ class CustomDrawer extends StatelessWidget {
               ),
               trailing: const Icon(
                 Icons.exit_to_app_rounded,
-                size: 40,
+                size: 35,
                 color: COLOR_PRIMARY_DARK,
               ),
               onTap: () {},
