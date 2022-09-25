@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:smart_spoon_app/controllers/ThemeController/theme_constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_spoon_app/constants/theme_constants.dart';
+import 'package:smart_spoon_app/models/preferences.dart';
+import 'package:smart_spoon_app/services/prefernces_service.dart';
 import 'package:smart_spoon_app/views/home_screen/home_screen.dart';
+import 'package:smart_spoon_app/views/splash_screen/splash_screen.dart';
 
-import 'controllers/ThemeController/theme_manager.dart';
+import 'blocs/preferences_bloc/preferences_cubit.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  return runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -14,37 +21,30 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (_) => ThemeManager(),
-        ),
-      ],
-      child: const Home(),
+    return FutureBuilder<PreferencesCubit>(
+      future: buildBloc(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData && snapshot.data != null) {
+          return BlocProvider(
+            create: (_) => snapshot.data!,
+            child: BlocBuilder<PreferencesCubit, Preferences>(
+              builder: (context, prefs) => MaterialApp(
+                theme: lightTheme,
+                darkTheme: darkTheme,
+                themeMode: prefs.themeMode,
+                home: HomeScreen(),
+              ),
+            ),
+          );
+        }
+        return const SplashScreen();
+      },
     );
   }
 }
 
-class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeMode _themeMode = Provider.of<ThemeManager>(context).themeMode;
-    return MaterialApp(
-      title: 'Flutter Demo',
-      themeMode: _themeMode,
-      home: MaterialApp(
-        title: 'Flutter Demo',
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        themeMode: _themeMode,
-        home: HomeScreen(),
-        initialRoute: HomeScreen.name,
-        routes: {
-          HomeScreen.name: (context) => HomeScreen(),
-        },
-      ),
-    );
-  }
+Future<PreferencesCubit> buildBloc() async {
+  final prefs = await SharedPreferences.getInstance();
+  final service = MyPreferencesService(prefs);
+  return PreferencesCubit(service, service.get());
 }
