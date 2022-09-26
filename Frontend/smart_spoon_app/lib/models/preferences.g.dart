@@ -7,13 +7,15 @@ part of 'preferences.dart';
 // **************************************************************************
 
 Preferences _$PreferencesFromJson(Map<String, dynamic> json) => Preferences(
-      $enumDecodeNullable(_$ThemeModeEnumMap, json['themeMode']) ??
+      themeMode: $enumDecodeNullable(_$ThemeModeEnumMap, json['themeMode']) ??
           ThemeMode.system,
+      lanCode: json['lanCode'] as String? ?? 'en',
     );
 
 Map<String, dynamic> _$PreferencesToJson(Preferences instance) =>
     <String, dynamic>{
       'themeMode': _$ThemeModeEnumMap[instance.themeMode]!,
+      'lanCode': instance.lanCode,
     };
 
 const _$ThemeModeEnumMap = {

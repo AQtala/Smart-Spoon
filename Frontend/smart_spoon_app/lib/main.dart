@@ -6,8 +6,8 @@ import 'package:smart_spoon_app/models/preferences.dart';
 import 'package:smart_spoon_app/services/prefernces_service.dart';
 import 'package:smart_spoon_app/views/home_screen/home_screen.dart';
 import 'package:smart_spoon_app/views/splash_screen/splash_screen.dart';
-
 import 'blocs/preferences_bloc/preferences_cubit.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,13 @@ class MyApp extends StatelessWidget {
                 theme: lightTheme,
                 darkTheme: darkTheme,
                 themeMode: prefs.themeMode,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+                locale: prefs.lanCode == 'ar'
+                    ? const Locale("ar")
+                    : const Locale("en"),
                 home: HomeScreen(),
+                initialRoute: HomeScreen.name,
               ),
             ),
           );

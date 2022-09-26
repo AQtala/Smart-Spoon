@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants/theme_constants.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomAppBarWidget extends StatelessWidget {
   const CustomAppBarWidget(
@@ -36,9 +37,9 @@ class CustomAppBarWidget extends StatelessWidget {
                   color: COLOR_PRIMARY_DARK,
                   iconSize: 40,
                 ),
-                const Text(
-                  "App_Name",
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.homePage,
+                  style: const TextStyle(
                     color: COLOR_PRIMARY_DARK,
                     fontWeight: FontWeight.w800,
                     fontSize: 18,

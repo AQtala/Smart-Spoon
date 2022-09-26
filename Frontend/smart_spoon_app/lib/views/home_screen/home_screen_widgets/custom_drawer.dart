@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../blocs/preferences_bloc/preferences_cubit.dart';
 import '../../../constants/theme_constants.dart';
 import '../../../models/preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key, required this.size, required this.scaffoldKey})
@@ -24,7 +25,7 @@ class CustomDrawer extends StatelessWidget {
               child: Container(
                 alignment: Alignment.topCenter,
                 child: Text(
-                  'Settings',
+                  AppLocalizations.of(context)!.settings,
                   style: TextStyle(
                       color: COLOR_PRIMARY_DARK, fontSize: size.width * 0.12),
                 ),
@@ -34,9 +35,9 @@ class CustomDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: const Text(
-                'Home',
-                style: TextStyle(
+              title: Text(
+                AppLocalizations.of(context)!.homePage,
+                style: const TextStyle(
                   color: COLOR_PRIMARY_DARK,
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
@@ -53,9 +54,9 @@ class CustomDrawer extends StatelessWidget {
               },
             ),
             ListTile(
-              title: const Text(
-                'Language',
-                style: TextStyle(
+              title: Text(
+                AppLocalizations.of(context)!.language,
+                style: const TextStyle(
                   color: COLOR_PRIMARY_DARK,
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
@@ -69,23 +70,36 @@ class CustomDrawer extends StatelessWidget {
                   color: COLOR_PRIMARY_DARK,
                 ),
                 underline: const SizedBox(),
-                items: [
+                items: const [
                   DropdownMenuItem(
-                    value: const Locale('en'),
-                    child: const Text('English'),
+                    value: Locale('en'),
+                    child: Text('English'),
                   ),
                   DropdownMenuItem(
-                    value: const Locale('ar'),
-                    child: const Text('العربية'),
+                    value: Locale('ar'),
+                    child: Text('العربية'),
                   ),
                 ],
-                onChanged: (Locale? value) {},
+                onChanged: (Locale? value) {
+                  if (value == null ||
+                      value.languageCode == prefCubit.state.lanCode) return;
+
+                  if (value.languageCode == "en") {
+                    prefCubit.changePreferences(
+                      preferences.copyWith(lanCode: value.languageCode),
+                    );
+                  } else if (value.languageCode == "ar") {
+                    prefCubit.changePreferences(
+                      preferences.copyWith(lanCode: value.languageCode),
+                    );
+                  }
+                },
               ),
             ),
             ListTile(
-              title: const Text(
-                'Dark Mode',
-                style: TextStyle(
+              title: Text(
+                AppLocalizations.of(context)!.darkMode,
+                style: const TextStyle(
                   color: COLOR_PRIMARY_DARK,
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
@@ -102,19 +116,23 @@ class CustomDrawer extends StatelessWidget {
                 items: [
                   DropdownMenuItem(
                     value: "Light",
-                    child: const Text('Light'),
+                    child: Text(AppLocalizations.of(context)!.light),
                   ),
                   DropdownMenuItem(
                     value: "Dark",
-                    child: const Text('Dark'),
+                    child: Text(AppLocalizations.of(context)!.dark),
                   ),
                   DropdownMenuItem(
                     value: "System",
-                    child: const Text('System'),
+                    child: Text(AppLocalizations.of(context)!.system),
                   ),
                 ],
                 onChanged: (String? value) {
-                  if (value == null || value == "System") {
+                  if (value == null ||
+                      value == prefCubit.state.themeMode.name) {
+                    return;
+                  }
+                  if (value == "System") {
                     prefCubit.changePreferences(
                         preferences.copyWith(themeMode: ThemeMode.system));
                   } else if (value == "Dark") {
@@ -128,9 +146,9 @@ class CustomDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-              title: const Text(
-                'Exit',
-                style: TextStyle(
+              title: Text(
+                AppLocalizations.of(context)!.exit,
+                style: const TextStyle(
                   color: COLOR_PRIMARY_DARK,
                   fontWeight: FontWeight.w700,
                   fontSize: 20,

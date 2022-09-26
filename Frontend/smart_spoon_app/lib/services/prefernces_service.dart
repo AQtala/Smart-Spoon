@@ -7,7 +7,6 @@ import '../models/preferences.dart';
 abstract class PreferencesService {
   Preferences get();
   Future<void> set(Preferences preferences);
-  Future<void> clear();
 }
 
 class MyPreferencesService implements PreferencesService {
@@ -32,10 +31,5 @@ class MyPreferencesService implements PreferencesService {
   Future<void> set(preferences) async {
     final data = jsonEncode(preferences.toJson());
     await _sharedPreferences.setString(PREFS_KEY, data);
-  }
-
-  @override
-  Future<void> clear() async {
-    _sharedPreferences.clear();
   }
 }
