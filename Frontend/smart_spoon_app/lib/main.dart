@@ -39,6 +39,10 @@ class MyApp extends StatelessWidget {
                     : const Locale("en"),
                 home: HomeScreen(),
                 initialRoute: HomeScreen.name,
+                routes: {
+                  HomeScreen.name: (context) => HomeScreen(),
+                },
+                debugShowCheckedModeBanner: false,
               ),
             ),
           );

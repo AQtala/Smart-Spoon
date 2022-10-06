@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../blocs/preferences_bloc/preferences_cubit.dart';
-import '../../../constants/theme_constants.dart';
 import '../../../models/preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -14,9 +13,10 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final prefCubit = context.read<PreferencesCubit>();
+    var _theme = Theme.of(context);
     return BlocBuilder<PreferencesCubit, Preferences>(
       builder: (context, preferences) => Drawer(
-        backgroundColor: COLOR_PRIMARY,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
@@ -27,27 +27,27 @@ class CustomDrawer extends StatelessWidget {
                 child: Text(
                   AppLocalizations.of(context)!.settings,
                   style: TextStyle(
-                      color: COLOR_PRIMARY_DARK, fontSize: size.width * 0.12),
+                      color: _theme.canvasColor, fontSize: size.width * 0.12),
                 ),
               ),
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
+                color: _theme.colorScheme.primary,
               ),
             ),
             ListTile(
               title: Text(
                 AppLocalizations.of(context)!.homePage,
-                style: const TextStyle(
-                  color: COLOR_PRIMARY_DARK,
+                style: TextStyle(
+                  color: _theme.canvasColor,
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
                   overflow: TextOverflow.visible,
                 ),
               ),
-              trailing: const Icon(
+              trailing: Icon(
                 Icons.home_outlined,
                 size: 38,
-                color: COLOR_PRIMARY_DARK,
+                color: _theme.canvasColor,
               ),
               onTap: () {
                 scaffoldKey.currentState!.openEndDrawer();
@@ -56,18 +56,18 @@ class CustomDrawer extends StatelessWidget {
             ListTile(
               title: Text(
                 AppLocalizations.of(context)!.language,
-                style: const TextStyle(
-                  color: COLOR_PRIMARY_DARK,
+                style: TextStyle(
+                  color: _theme.canvasColor,
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
                   overflow: TextOverflow.visible,
                 ),
               ),
               trailing: DropdownButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.language_rounded,
                   size: 35,
-                  color: COLOR_PRIMARY_DARK,
+                  color: _theme.canvasColor,
                 ),
                 underline: const SizedBox(),
                 items: const [
@@ -99,18 +99,18 @@ class CustomDrawer extends StatelessWidget {
             ListTile(
               title: Text(
                 AppLocalizations.of(context)!.darkMode,
-                style: const TextStyle(
-                  color: COLOR_PRIMARY_DARK,
+                style: TextStyle(
+                  color: _theme.canvasColor,
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
                   overflow: TextOverflow.visible,
                 ),
               ),
               trailing: DropdownButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.display_settings_rounded,
                   size: 35,
-                  color: COLOR_PRIMARY_DARK,
+                  color: _theme.canvasColor,
                 ),
                 underline: const SizedBox(),
                 items: [
@@ -148,17 +148,17 @@ class CustomDrawer extends StatelessWidget {
             ListTile(
               title: Text(
                 AppLocalizations.of(context)!.exit,
-                style: const TextStyle(
-                  color: COLOR_PRIMARY_DARK,
+                style: TextStyle(
+                  color: _theme.canvasColor,
                   fontWeight: FontWeight.w700,
                   fontSize: 20,
                   overflow: TextOverflow.visible,
                 ),
               ),
-              trailing: const Icon(
+              trailing: Icon(
                 Icons.exit_to_app_rounded,
                 size: 35,
-                color: COLOR_PRIMARY_DARK,
+                color: _theme.canvasColor,
               ),
               onTap: () {},
             )

@@ -25,7 +25,6 @@ class HomeScreen extends StatelessWidget {
           CustomAppBarWidget(
             width: size.width,
             height: size.height,
-            scaffoldKey: _scaffoldKey,
           ),
           DeviceContainer(
             width: size.width,
@@ -34,6 +33,7 @@ class HomeScreen extends StatelessWidget {
           CustomNavBarWidget(
             width: size.width,
             height: size.height,
+            scaffoldKey: _scaffoldKey,
           ),
         ],
       ),
