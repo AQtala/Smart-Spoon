@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_spoon_app/blocs/data_cubit.dart';
 import 'package:smart_spoon_app/constants/theme_constants.dart';
 import 'package:smart_spoon_app/models/preferences.dart';
+import 'package:smart_spoon_app/services/data_service.dart';
 import 'package:smart_spoon_app/services/prefernces_service.dart';
+import 'package:smart_spoon_app/views/device_screen/device_screen.dart';
 import 'package:smart_spoon_app/views/home_screen/home_screen.dart';
 import 'package:smart_spoon_app/views/splash_screen/splash_screen.dart';
-import 'blocs/preferences_bloc/preferences_cubit.dart';
+import 'blocs/preferences_cubit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
@@ -18,7 +21,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<PreferencesCubit>(
@@ -41,6 +43,10 @@ class MyApp extends StatelessWidget {
                 initialRoute: HomeScreen.name,
                 routes: {
                   HomeScreen.name: (context) => HomeScreen(),
+                  DeviceScreen.name: (context) => BlocProvider(
+                        create: (context) => DataCubit(MyDataService()),
+                        child: const DeviceScreen(),
+                      ),
                 },
                 debugShowCheckedModeBanner: false,
               ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../blocs/preferences_bloc/preferences_cubit.dart';
+import '../../../blocs/preferences_cubit.dart';
 import '../../../models/preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
