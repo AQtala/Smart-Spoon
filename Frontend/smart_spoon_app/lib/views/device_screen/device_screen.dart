@@ -49,7 +49,16 @@ class _DeviceScreenState extends State<DeviceScreen> {
             );
           } else if (state is ErrorDataState) {
             return Center(
-                child: Text("An Error Has occured (" + state.message + ")"));
+              child: Text(
+                AppLocalizations.of(context)!.internet_error,
+                style: TextStyle(
+                  color: _theme.colorScheme.error,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            );
           } else if (state is ResponseDataState) {
             data = data ?? state.data.first;
             return SizedBox(
