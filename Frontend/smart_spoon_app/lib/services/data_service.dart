@@ -24,16 +24,16 @@ class MyDataService implements DataService {
           value['pitch'].forEach((key, v) {
             if (v != "nan") {
               pitch.add(FlSpot(time, (double.parse(v))));
+              time += 1;
             }
-            time += 1;
           });
           time = 0;
           List<FlSpot> roll = List.empty(growable: true);
           value['roll'].forEach((key, v) {
             if (v != "nan") {
               roll.add(FlSpot(time, (double.parse(v))));
+              time += 1;
             }
-            time += 1;
           });
           DateTime date = DateFormat('d-MMMM-yyyy').parse(key);
           String stringDate = date.day.toString() +
