@@ -1,7 +1,6 @@
 import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart';
 import 'package:smart_spoon_app/models/data.dart';
 import 'package:http/http.dart' as http;
 
@@ -36,9 +35,16 @@ class MyDataService implements DataService {
             }
             time += 1;
           });
+          DateTime date = DateFormat('d-MMMM-yyyy').parse(key);
+          String stringDate = date.day.toString() +
+              "/" +
+              date.month.toString() +
+              "/" +
+              date.year.toString();
+          print(stringDate);
           result.add(
             Data(
-              title: key,
+              title: stringDate,
               numberOfBites: value['noBites'] ?? 0,
               pitch: pitch,
               roll: roll,

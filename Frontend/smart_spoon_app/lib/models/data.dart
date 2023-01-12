@@ -15,24 +15,6 @@ class Data {
     required this.roll,
   });
 
-  // factory Data.fromJson(json) =>
-  //     _$DataFromJson(Map<String, dynamic>.from(json));
-
-  // Map<String, dynamic> toJson() => _$DataToJson(this);
-  // Data copyWith({
-  //   String? title,
-  //   int? numberOfBites,
-  //   List<FlSpot>? pitch,
-  //   List<FlSpot>? roll,
-  // }) {
-  //   return Data(
-  //     title: title ?? "",
-  //     numberOfBites: numberOfBites ?? 0,
-  //     pitch: pitch ?? List.empty(),
-  //     roll: roll ?? List.empty(),
-  //   );
-  // }
-
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||

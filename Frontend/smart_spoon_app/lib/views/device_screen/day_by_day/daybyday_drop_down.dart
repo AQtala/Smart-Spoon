@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
-class DropDownButton extends StatefulWidget {
+class DayByDayDropDown extends StatefulWidget {
   final List<String> list;
   final Function(int) changeDate;
-  const DropDownButton({Key? key, required this.list, required this.changeDate})
+  const DayByDayDropDown(
+      {Key? key, required this.list, required this.changeDate})
       : super(key: key);
 
   @override
-  State<DropDownButton> createState() => _DropDownButtonState();
+  State<DayByDayDropDown> createState() => _DayByDayDropDownState();
 }
 
-class _DropDownButtonState extends State<DropDownButton> {
+class _DayByDayDropDownState extends State<DayByDayDropDown> {
   String? dropdownValue;
 
   @override
@@ -26,7 +26,7 @@ class _DropDownButtonState extends State<DropDownButton> {
       ),
       padding: const EdgeInsets.all(15),
       height: size.height * 0.06,
-      width: size.width * 0.8,
+      width: size.width * 0.5,
       child: DropdownButton<String>(
         value: dropdownValue,
         alignment: Alignment.center,
@@ -52,15 +52,10 @@ class _DropDownButtonState extends State<DropDownButton> {
         },
         items: widget.list.map<DropdownMenuItem<String>>(
           (String value) {
-            DateTime date = DateFormat('d-MMMM-yyyy').parse(value);
             return DropdownMenuItem<String>(
               value: value,
               child: Text(
-                date.day.toString() +
-                    "/" +
-                    date.month.toString() +
-                    "/" +
-                    date.year.toString(),
+                value,
                 textAlign: TextAlign.center,
               ),
             );
