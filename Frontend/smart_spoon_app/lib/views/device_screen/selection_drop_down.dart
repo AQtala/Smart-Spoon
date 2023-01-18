@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_spoon_app/enums/selection_enum.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SelectionDropDown extends StatefulWidget {
   final Function(SelectionEnum) changeSelection;
@@ -30,7 +31,7 @@ class _SelectionDropDownState extends State<SelectionDropDown> {
                 spreadRadius: 1)
           ]),
       padding: const EdgeInsets.all(15),
-      height: size.height * 0.06,
+      height: size.height * 0.07,
       width: size.width * 0.8,
       child: DropdownButton<SelectionEnum>(
         value: dropdownValue,
@@ -60,8 +61,8 @@ class _SelectionDropDownState extends State<SelectionDropDown> {
               (selection) => DropdownMenuItem(
                 value: selection,
                 child: Text(selection == SelectionEnum.dayByDay
-                    ? "Day By Day"
-                    : "Compare Days"),
+                    ? AppLocalizations.of(context)!.dayByDay
+                    : AppLocalizations.of(context)!.compareDays),
               ),
             )
             .toList(),

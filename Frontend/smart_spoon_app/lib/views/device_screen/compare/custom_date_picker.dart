@@ -13,23 +13,6 @@ class CustomDatePicker extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Container(
-          padding:
-              const EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
-          decoration: BoxDecoration(
-            border: Border.all(style: BorderStyle.none, width: 0),
-            borderRadius: BorderRadius.circular(10),
-            color: _theme.colorScheme.primary.withAlpha(150),
-          ),
-          child: Text(
-            "9 Day Are Allowed",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: _theme.colorScheme.onBackground,
-            ),
-          ),
-        ),
-        Container(
           decoration: BoxDecoration(
             color: _theme.colorScheme.secondary,
             borderRadius: BorderRadius.circular(15),
@@ -37,7 +20,11 @@ class CustomDatePicker extends StatelessWidget {
           width: size.width,
           height: size.height * 0.3,
           padding: EdgeInsets.all(size.width * 0.05),
-          margin: EdgeInsets.all(size.width * 0.1),
+          margin: EdgeInsets.only(
+            left: size.width * 0.1,
+            right: size.width * 0.1,
+            bottom: size.height * 0.01,
+          ),
           child: SfDateRangePicker(
             view: DateRangePickerView.year,
             monthViewSettings: const DateRangePickerMonthViewSettings(

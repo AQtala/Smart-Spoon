@@ -38,7 +38,7 @@ class CompareBarWidget extends StatelessWidget {
         ? data.reduce((curr, next) => curr.y > next.y ? curr : next).y
         : 0;
     return SizedBox(
-      height: size.height * 0.35,
+      height: size.height * 0.4,
       width: size.width,
       child: Container(
         decoration: BoxDecoration(
@@ -53,7 +53,7 @@ class CompareBarWidget extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.only(
-                  top: 10, bottom: 10, left: 15, right: 15),
+                  top: 15, bottom: 15, left: 15, right: 15),
               decoration: BoxDecoration(
                 border: Border.all(style: BorderStyle.none, width: 0),
                 borderRadius: BorderRadius.circular(25),
@@ -68,75 +68,88 @@ class CompareBarWidget extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              width: size.width * 0.9,
-              height: size.height * 0.25,
-              child: BarChart(
-                BarChartData(
-                  borderData: FlBorderData(
-                    show: true,
-                    border: const Border(
-                      bottom: BorderSide(color: Color(0xff4e4965), width: 4),
-                      left: BorderSide(color: Colors.transparent),
-                      right: BorderSide(color: Colors.transparent),
-                      top: BorderSide(color: Colors.transparent),
-                    ),
-                  ),
-                  backgroundColor: _theme.colorScheme.primary,
-                  gridData: FlGridData(show: true),
-                  alignment: BarChartAlignment.center,
-                  maxY: maxY,
-                  minY: minY,
-                  groupsSpace: 30,
-                  barTouchData: BarTouchData(enabled: true),
-                  titlesData: FlTitlesData(
-                    show: true,
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        interval: 1,
-                        getTitlesWidget: getTitles,
-                      ),
-                    ),
-                    topTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false),
-                    ),
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        interval: maxY - minY > 10 ? 50 : 1,
-                        reservedSize: 50,
-                        showTitles: true,
-                      ),
-                    ),
-                    rightTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: false,
-                      ),
-                    ),
-                  ),
-                  barGroups: data
-                      .map(
-                        (e) => BarChartGroupData(
-                          x: e.x,
-                          barRods: [
-                            BarChartRodData(
-                              toY: e.y,
-                              width: size.width * 0.01,
-                              gradient: LinearGradient(
-                                colors: [
-                                  _theme.colorScheme.secondary.withAlpha(150),
-                                  COLOR_EXTRA_SECOND.withAlpha(100)
-                                ],
-                              ),
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(6),
-                                topRight: Radius.circular(6),
-                              ),
-                            ),
-                          ],
+            Container(
+              margin: const EdgeInsets.all(0),
+              padding: const EdgeInsets.all(0),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  width: data.length < 10
+                      ? size.width * 0.9
+                      : data.length +
+                          (size.width + size.width * 0.06 * data.length),
+                  height: size.height * 0.25,
+                  padding: const EdgeInsets.all(5),
+                  child: BarChart(
+                    BarChartData(
+                      borderData: FlBorderData(
+                        show: true,
+                        border: const Border(
+                          bottom:
+                              BorderSide(color: Color(0xff4e4965), width: 4),
+                          left: BorderSide(color: Colors.transparent),
+                          right: BorderSide(color: Colors.transparent),
+                          top: BorderSide(color: Colors.transparent),
                         ),
-                      )
-                      .toList(),
+                      ),
+                      backgroundColor: _theme.colorScheme.primary,
+                      gridData: FlGridData(show: true),
+                      alignment: BarChartAlignment.center,
+                      maxY: maxY,
+                      minY: minY,
+                      groupsSpace: 30,
+                      barTouchData: BarTouchData(enabled: true),
+                      titlesData: FlTitlesData(
+                        show: true,
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            interval: 1,
+                            getTitlesWidget: getTitles,
+                          ),
+                        ),
+                        topTitles: AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
+                        ),
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            interval: maxY - minY > 10 ? 50 : 1,
+                            reservedSize: 50,
+                            showTitles: true,
+                          ),
+                        ),
+                        rightTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: false,
+                          ),
+                        ),
+                      ),
+                      barGroups: data
+                          .map(
+                            (e) => BarChartGroupData(
+                              x: e.x,
+                              barRods: [
+                                BarChartRodData(
+                                  toY: e.y,
+                                  width: size.width * 0.01,
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      _theme.colorScheme.secondary
+                                          .withAlpha(150),
+                                      COLOR_EXTRA_SECOND.withAlpha(100)
+                                    ],
+                                  ),
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(6),
+                                    topRight: Radius.circular(6),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
                 ),
               ),
             ),

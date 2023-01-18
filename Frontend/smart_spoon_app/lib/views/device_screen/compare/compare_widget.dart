@@ -4,7 +4,7 @@ import 'package:smart_spoon_app/enums/selection_enum.dart';
 import 'package:smart_spoon_app/models/data.dart';
 import 'package:smart_spoon_app/views/device_screen/compare/compare_bar_widget.dart';
 import 'package:smart_spoon_app/views/device_screen/compare/custom_date_picker.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../models/bar_spot.dart';
 
 class CompareWidget extends StatefulWidget {
@@ -28,9 +28,7 @@ class _CompareWidgetState extends State<CompareWidget> {
   void updateDates(List<String> list) {
     setState(
       () {
-        if (list.length < 10) {
-          dates = list;
-        }
+        dates = list;
       },
     );
   }
@@ -46,9 +44,12 @@ class _CompareWidgetState extends State<CompareWidget> {
             height: size.height * 0.035,
           ),
           CustomDatePicker(onChangeDate: updateDates),
-          CompareBarWidget(data: bitesData, title: "Number of Bites"),
-          CompareBarWidget(data: pitchData, title: "Pitch"),
-          CompareBarWidget(data: rollData, title: "Roll"),
+          CompareBarWidget(
+              data: bitesData, title: AppLocalizations.of(context)!.bites),
+          CompareBarWidget(
+              data: pitchData, title: AppLocalizations.of(context)!.pitch),
+          CompareBarWidget(
+              data: rollData, title: AppLocalizations.of(context)!.roll),
         ],
       ),
     );
