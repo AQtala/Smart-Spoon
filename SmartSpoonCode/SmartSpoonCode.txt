@@ -1,0 +1,285 @@
+//Project Name:From Tremor-Prone to Tremor-Proof: Smart Spoon for Parkinson's Patients
+
+//Student 1: Merna Jeries 133071
+//Student 2: Tala Abu Qdais 132333
+//Student 3: Feras Hamam 134806 
+
+#include <Wire.h> //defines the functions and variables required to interface with I2C (Inter-Integrated Circuit) devices using the I2C bus protocol.
+#include <Kalman.h>  //to estimate the state of from a series of noisy measurements. 
+#include <PID_v1.h> //used to produce an output that is proportional to the error between the desired output and the measured output
+#include "Servo.h" //Servo's control library
+#include <LiquidCrystal.h>
+
+String Date= "4/2/2023";
+const int rs = 7, en = 6, d4 = 2, d5 = 3, d6 = 4, d7 = 5;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+Kalman X_kalman, Y_kalman; 
+Servo X_Servo, Y_Servo;
+
+double Set_X_Point ,X_Input,X_Output ;
+double Kp_X_Gain =1, Ki_X_Gain = 0, Kd_X_Gain = 0;
+PID PID_X(&X_Input , &X_Output , &Set_X_Point , Kp_X_Gain, Ki_X_Gain , Kd_X_Gain, DIRECT) ;
+
+double Set_Y_Point ,Y_Input,Y_Output ;
+double Kp_Y_Gain = 1 , Ki_Y_Gain = 0, Kd_Y_Gain = 0;
+PID PID_Y(&Y_Input , &Y_Output , &Set_Y_Point , Kp_Y_Gain, Ki_Y_Gain , Kd_Y_Gain, DIRECT) ;
+
+//MPU-6050 Data
+double X_Axis, Y_Axis, Z_Axis;
+double X_Gyroscope, Y_Gyroscope;
+
+double X_kalman_Angle, Y_kalman_Angle;//Angle measured using Kalman filter algorithm
+double X_Gyroscope_Rate, Y_Gyroscope_Rate; //X and Y Gyroscope Rate represent angular velocity of the system
+
+//Roll represents rotation around the longitudinal axis of an object
+//Pitch represents rotation around the lateral axis of an object
+double Roll, Pitch;
+
+double Delta_Time;
+
+uint32_t timer;
+uint8_t I2C_Data[12];//array to save MPU-6050 data 
+
+bool Is_the_spoon_filling_with_food= false;
+int Counter=0;
+
+const uint8_t MPU6050_Address = 0x68; 
+const uint16_t TimeOut_I2C = 1000;
+
+void Kalman_Filter();
+uint8_t I2C_Write(uint8_t Reg_Address, uint8_t Data, bool Stop) ;
+uint8_t I2C_Write(uint8_t Reg_Address, uint8_t *Data, uint8_t length, bool Stop);
+uint8_t I2C_Read(uint8_t Reg_Address, uint8_t *Data, uint8_t Num_of_Bytes);
+
+void setup() 
+ {
+  Serial.begin(9600);
+  Wire.begin(); 
+  
+  Y_Servo.attach(10);
+  X_Servo.attach(11);
+
+  Wire.setClock(400000UL); //setting the I2C clock frequency to 400 KHz
+ 
+  I2C_Data[0] = 7;    // to configure the sample rate to 1kHz
+  I2C_Data[1] = 0x00; //to set the filter to 260 Hz for the accelerometer, 256 Hz for the gyroscope, and 8 KHz for the sampling rate.Also, the external synchronization feature was not used in this instance
+  I2C_Data[2] = 0x00; // to set the full scale range of the gyroscopes to ±250°/s  
+  I2C_Data[3] = 0x00; //to set the full scale range of the accelerometer to ±2g
+
+  
+  while (I2C_Write(0x19, I2C_Data, 4, false)); 
+  //SMPLRT_DIV register addrees is 0x19
+  //CONFIG register address is 0x1A
+  //GYRO_CONFIG register address is 0x1B
+  //ACCEL_CONFIG register address is 0x1C
+  
+  while (I2C_Write(0x6B, 0x01, true)); //PWR_MGMT_1 register address is 0x6B
+  
+  delay(100); 
+  
+  while (I2C_Read(0x3B, I2C_Data, 6));
+   X_Axis = (int16_t)((I2C_Data[0] << 8) | I2C_Data[1]); //ACCEL_XOUT[15:8] and ACCEL_XOUT[7:0] can be accessed at addresses 0x3B and 0x3C respectively
+   Y_Axis = (int16_t)((I2C_Data[2] << 8) | I2C_Data[3]); //ACCEL_YOUT[15:8] and ACCEL_YOUT[7:0] can be accessed at addresses 0x3D and 0x3E respectively
+   Z_Axis = (int16_t)((I2C_Data[4] << 8) | I2C_Data[5]); //ACCEL_ZOUT[15:8] and ACCEL_ZOUT[7:0] can be accessed at addresses 0x3F and 0x40 respectively
+
+ 
+  Roll = (atan(Y_Axis / sqrt(pow(X_Axis, 2) + pow(Z_Axis, 2))) * 180 / PI) ;
+  Pitch = (atan(-1 * X_Axis / sqrt(pow(Y_Axis, 2) + pow(Z_Axis, 2))) * 180 / PI); 
+
+  // to set the current roll and pitch angles as the starting point for the Kalman filter algorithm
+  X_kalman.setAngle(Roll); 
+  Y_kalman.setAngle(Pitch);
+
+  timer = micros(); //stored the current time in microseconds
+
+  Set_X_Point = 90;
+  Set_Y_Point = 90;
+
+  Y_Servo.write(0);
+  X_Servo.write(0);
+
+  //PID controllers for both the X and Y axes were set to "AUTOMATIC" mode where the controllers calculated the control output constantly.
+  PID_X.SetMode(AUTOMATIC);
+  PID_Y.SetMode(AUTOMATIC);
+
+  //the control output will be calculated every 10 microseconds
+  PID_X.SetSampleTime(10);
+  PID_Y.SetSampleTime(10);
+
+  
+ lcd.begin(16, 2);
+ lcd.print("Status : ON");
+ lcd.setCursor(0, 1);
+ lcd.print(Date); 
+ }
+
+void loop() 
+ {
+  Kalman_Filter();
+
+  Set_X_Point = 90;
+  Set_Y_Point = 90;
+
+  X_Input = X_kalman_Angle;
+  Y_Input = Y_kalman_Angle;
+
+  //The X_Input and Y_Input variables are adjusted to be within the range of -90 to 90 if they are outside of this range.The closest limit of this range is used as the adjusted value.
+  if(X_Input < -90.0) 
+   {
+     X_Input = -90.0 ;
+   } 
+   
+  else if(X_Input > 90.0) 
+   {
+     X_Input = 90.0 ;
+   }
+
+  if(Y_Input < -90.0) 
+   {
+     Y_Input = -90.0 ;
+   }
+    
+  else if(Y_Input > 90.0) 
+   {
+     Y_Input = 90.0 ;
+   }
+
+  //To execute the calculations required for the PID control system to produce the desired output.
+  PID_X.Compute();
+  PID_Y.Compute();
+
+  if(X_Axis>8000)
+   {
+    Y_Servo.write(180-Y_Output);
+   }
+   
+  else if(Y_Input<55)
+   {
+    Y_Servo.write(180-Y_Output);
+    
+    if(Is_the_spoon_filling_with_food) 
+     { 
+      X_Servo.write(90); 
+      Counter++; //the counter mechanism has been employed to facilitate smooth spoon movement after it has been filled with food.
+       
+      if(Counter==50)
+       {
+        Is_the_spoon_filling_with_food=false; 
+        Counter=0;
+       }
+      }
+      
+     else
+      {
+        X_Servo.write(X_Output);
+      }
+    }
+    
+  else
+   {
+    //the Spoon filling with food
+    Y_Servo.write(135);
+    X_Servo.write(90);
+    Is_the_spoon_filling_with_food=true;
+   }
+ }
+
+void Kalman_Filter() 
+{
+  while (I2C_Read(0x3B, I2C_Data, 12));
+   X_Axis = (int16_t)((I2C_Data[0] << 8) | I2C_Data[1]);
+   Y_Axis = (int16_t)((I2C_Data[2] << 8) | I2C_Data[3]);
+   Z_Axis = (int16_t)((I2C_Data[4] << 8) | I2C_Data[5]);
+   X_Gyroscope = (int16_t)((I2C_Data[8] << 8) | I2C_Data[9]); //GYRO_XOUT[15:8] and GYRO_XOUT[7:0] can be accessed at addresses 0x43 and 0x44 respectively
+   Y_Gyroscope = (int16_t)((I2C_Data[10] << 8) | I2C_Data[11]); //GYRO_YOUT[15:8] and GYRO_YOUT[7:0] can be accessed at addresses 0x45 and 0x46 respectively
+   
+  Delta_Time = (double)(micros() - timer) / 1000000;
+  timer = micros();
+  
+  Roll = (atan(Y_Axis / sqrt(pow(X_Axis, 2) + pow(Z_Axis, 2))) * 180 / PI) ;
+  Pitch = (atan(-1 * X_Axis / sqrt(pow(Y_Axis, 2) + pow(Z_Axis, 2))) * 180 / PI); 
+
+  //131.0 is the conversion factor which is specific to the gyroscope being used
+  X_Gyroscope_Rate = X_Gyroscope / 131.0;
+  Y_Gyroscope_Rate = Y_Gyroscope / 131.0; 
+ 
+  if ((Roll < -90 && X_kalman_Angle > 90) || (Roll > 90 && X_kalman_Angle < -90)) //Wrong is Kalman filter calculation 
+   {
+    X_kalman.setAngle(Roll);
+    X_kalman_Angle =Roll;
+   } 
+   
+  else
+   X_kalman_Angle = X_kalman.getAngle(Roll, X_Gyroscope_Rate, Delta_Time); 
+
+
+  if ((Pitch < -90 && Y_kalman_Angle > 90) || (Pitch > 90 && Y_kalman_Angle < -90)) //Wrong is Kalman filter calculation 
+   {
+    Y_kalman.setAngle(Pitch);
+    Y_kalman_Angle = Pitch;
+   }
+    
+  else
+   Y_kalman_Angle = Y_kalman.getAngle(Pitch, Y_Gyroscope_Rate, Delta_Time); 
+
+ }
+
+uint8_t I2C_Write(uint8_t Reg_Address, uint8_t Data, bool Stop) 
+ {
+  return I2C_Write(Reg_Address, &Data, 1,Stop); 
+ }
+
+uint8_t I2C_Write(uint8_t Reg_Address, uint8_t *Data, uint8_t length, bool Stop) 
+ {
+  Wire.beginTransmission(MPU6050_Address);
+  Wire.write(Reg_Address);
+  Wire.write(Data, length);
+  uint8_t rcode = Wire.endTransmission(Stop); 
+  
+  if (rcode) 
+   {
+    Serial.print(F("I2C Write is failed: "));
+    Serial.println(rcode);
+   }
+   
+  return rcode;
+ }
+
+uint8_t I2C_Read(uint8_t Reg_Address, uint8_t *Data, uint8_t Num_of_Bytes) 
+ {
+  uint32_t Time_Out_Timer;
+  Wire.beginTransmission(MPU6050_Address);
+  Wire.write(Reg_Address);
+  uint8_t rcode = Wire.endTransmission(false); 
+  
+  if (rcode) 
+   {
+    Serial.print(F("I2C Read is failed: "));
+    Serial.println(rcode);
+    return rcode;
+   }
+   
+  Wire.requestFrom(MPU6050_Address, Num_of_Bytes, (uint8_t)true); 
+  for (uint8_t i = 0; i < Num_of_Bytes; i++) 
+   {
+    if (Wire.available())
+     Data[i] = Wire.read();
+     
+    else 
+     {
+      Time_Out_Timer = micros();
+      
+      while (((micros() - Time_Out_Timer) < TimeOut_I2C) && !Wire.available());
+       if (Wire.available())
+        Data[i] = Wire.read();
+        
+       else 
+        {
+         Serial.println(F("I2C Read timeout"));
+         return 5; 
+        }
+     }
+  }
+  return 0;
+ }
