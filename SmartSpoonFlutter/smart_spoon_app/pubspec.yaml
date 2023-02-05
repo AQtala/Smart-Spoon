@@ -1,0 +1,41 @@
+name: smart_spoon_app
+description: A new Flutter project.
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.16.2 <3.0.0"
+
+dependencies:
+  build_runner: ^2.2.1
+  cupertino_icons: ^1.0.2
+  equatable: ^2.0.5
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^8.1.1
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.17.0
+  json_annotation: ^4.7.0
+  json_serializable: ^6.4.0
+  lottie: ^1.4.2
+  shared_preferences: ^2.0.15
+  http: ^0.13.5
+  flutter_i18n: ^0.32.4
+  fl_chart: ^0.55.2
+  syncfusion_flutter_datepicker: ^20.4.42
+
+dev_dependencies:
+  flutter_lints: ^1.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  generate: true
+  assets:
+    - assets/animations/
+    - assets/icons/
+
+  uses-material-design: true
