@@ -64,10 +64,9 @@ class _DeviceScreenState extends State<DeviceScreen> {
               ),
             );
           } else if (state is ResponseDataState) {
-            state.data.sort((a, b) =>
-                int.parse(a.title.substring(0, a.title.indexOf('/'))).compareTo(
-                    int.parse(b.title.substring(0, b.title.indexOf('/')))));
-
+            state.data.sort(
+              (a, b) => a.title.compareTo(b.title),
+            );
             return Column(
               children: [
                 SizedBox(

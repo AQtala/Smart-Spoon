@@ -59,7 +59,7 @@ class ChartWidget extends StatelessWidget {
                   LineChartBarData(
                       spots: data,
                       barWidth: 2,
-                      isCurved: true,
+                      isCurved: false,
                       show: true,
                       color: _theme.colorScheme.secondary,
                       belowBarData: BarAreaData(

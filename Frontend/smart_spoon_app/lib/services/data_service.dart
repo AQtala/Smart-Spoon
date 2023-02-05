@@ -36,11 +36,14 @@ class MyDataService implements DataService {
             }
           });
           DateTime date = DateFormat('d-MMMM-yyyy').parse(key);
-          String stringDate = date.day.toString() +
-              "/" +
+          String stringDate = date.year.toString() +
+              "-" +
               date.month.toString() +
-              "/" +
-              date.year.toString();
+              "-" +
+              (date.day.toString().length == 1
+                  ? "0" + date.day.toString()
+                  : date.day.toString());
+
           print(stringDate);
           result.add(
             Data(
